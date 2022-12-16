@@ -6,6 +6,7 @@ import { getImages } from 'services/services';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import toast, { Toaster } from 'react-hot-toast';
+import { usePrevious } from 'hooks/usePrevious';
 
 export const App = () => {
   const [query, setQuery] = useState('');
@@ -13,6 +14,9 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [pageNum, setPageNum] = useState(1);
   const [totalHits, setTotalHits] = useState(0);
+
+  const previousImages = usePrevious(images);
+  
 
   useEffect(() => {
     if (query !== '') {
@@ -57,7 +61,9 @@ export const App = () => {
     <>
       <Searchbar onSubmit={handleSubmit} />
 
-      {images.length > 0 && <ImageGallery images={images} />}
+      {images.length > 0 && (
+        <ImageGallery images={images} prevImg={previousImages} />
+      )}
 
       {images.length > 0 && !isLoading && images.length !== totalHits && (
         <Box display="flex" justifyContent="center" pb="15px">

@@ -1,54 +1,47 @@
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryStyled } from './ImageGallery.styled';
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-export class ImageGallery extends Component {
-  static defaultProps = {
-    images: [],
-  };
+export const ImageGallery = ({ images = [], prevImg }) => {
+  const myRef = React.createRef();
 
-  static propTypes = {
-    images: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-      })
-    ),
-  };
+  useEffect(() => {
+    const smoothScrolling = () => {
+      const firstImage = myRef.current.firstElementChild;
+      if (!firstImage) {
+        return;
+      }
+      const { height: cardHeight } = firstImage.getBoundingClientRect();
+      window.scrollBy({
+        top: cardHeight * 2.5,
+        behavior: 'smooth',
+      });
+    };
 
-  myRef = React.createRef();
-
-  componentDidUpdate(prevProps) {
     if (
-      prevProps.images.length >= 12 &&
-      prevProps.images.length !== this.props.images.length
+      images.length >= 12 &&
+      images.length !== prevImg.length &&
+      prevImg.length !== 0
     ) {
-      this.smoothScrolling();
+      console.log(images.length, prevImg.length);
+      smoothScrolling();
     }
-  }
+  }, [images, prevImg, myRef]);
 
-  smoothScrolling = () => {
-    const firstImage = this.myRef.current.firstElementChild;
-    if (!firstImage) {
-      return;
-    }
-    const { height: cardHeight } = firstImage.getBoundingClientRect();
-    window.scrollBy({
-      top: cardHeight * 2.5,
-      behavior: 'smooth',
-    });
-  };
+  return (
+    <ImageGalleryStyled ref={myRef}>
+      {images.map(image => (
+        <ImageGalleryItem key={image.id} image={image} />
+      ))}
+    </ImageGalleryStyled>
+  );
+};
 
-  render() {
-    const { images } = this.props;
-    return (
-      <ImageGalleryStyled ref={this.myRef}>
-        {images.map(image => (
-          <ImageGalleryItem key={image.id} image={image} />
-        ))}
-      </ImageGalleryStyled>
-    );
-  }
-}
-
-
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    })
+  ),
+};
