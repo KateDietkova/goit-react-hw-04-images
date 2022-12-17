@@ -1,10 +1,10 @@
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryStyled } from './ImageGallery.styled';
-import React, { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 export const ImageGallery = ({ images = [], prevImg }) => {
-  const myRef = React.createRef();
+  const myRef = useRef();
 
   useEffect(() => {
     const smoothScrolling = () => {

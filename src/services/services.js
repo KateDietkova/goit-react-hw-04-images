@@ -7,9 +7,8 @@ axios.defaults.baseURL = 'https://pixabay.com/api';
 
 export async function getImages(query, pageNum) {
   try {
-    const response = await axios.get(
-      `/?key=${API_KEY}&q=${query}&page=${pageNum}&image_type=photo&orientation=horizontal&per_page=12`
-    );
+    const url = `/?key=${API_KEY}&q=${query}&page=${pageNum}&image_type=photo&orientation=horizontal&per_page=12`;
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     toast.error('Something wrong :( Please reload this page');
