@@ -20,11 +20,9 @@ export const ImageGallery = ({ images = [], prevImg }) => {
     };
 
     if (
-      images.length >= 12 &&
       images.length !== prevImg.length &&
       prevImg.length !== 0
     ) {
-      console.log(images.length, prevImg.length);
       smoothScrolling();
     }
   }, [images, prevImg, myRef]);

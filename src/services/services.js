@@ -10,8 +10,6 @@ export async function getImages(query, pageNum) {
     const response = await axios.get(
       `/?key=${API_KEY}&q=${query}&page=${pageNum}&image_type=photo&orientation=horizontal&per_page=12`
     );
-    console.log(response.data.hits);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     toast.error('Something wrong :( Please reload this page');
